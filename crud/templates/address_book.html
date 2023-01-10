@@ -1,0 +1,60 @@
+{% extends "./base.html" %}
+{% block title %} Gestión {% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <h2>New Person</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="/registerPerson" method="POST"> {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="txtName" name="txtName" class="form-control my-2" placeholder="Name" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtAddress" name="txtAddress" class="form-control my-2" placeholder="Adress" maxlength="100" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtEmail" name="txtEmail" class="form-control my-2" placeholder="Email" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtPhoneNumber" name="txtPhoneNumber" class="form-control my-2" placeholder="Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-success btn-block text-white me-md-2">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <div class="table-responsive py-2">
+            <h2>Address Book</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Phone number</th>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for person in addresses %}
+                    <tr>
+                        <td>{{person.person_id}}</td>
+                        <td>{{person.name}}</td>
+                        <td>{{person.address}}</td>
+                        <td>{{person.email}}</td>
+                        <td>{{person.phone_number}}</td>
+                        <td><a href="editPerson/{{person.person_id}}" class="btn btn-info">Edit</a></td>
+                        <td><a href="deletePerson/{{person.person_id}}" class="btn btn-danger btnDelete">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
