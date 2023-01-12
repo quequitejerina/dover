@@ -8,11 +8,11 @@ def login_user(request):
         username = request.POST['txtName']
         password = request.POST['txtPassword']
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user:
             login(request, user)
             return redirect('home')
         else:
-            messages.success(request, ('There was an error login in...'))
+            messages.success(request, ('There was an error logging in!'))
             return redirect('login')
     else:
         return render(request, 'authenticate/login.html', {})

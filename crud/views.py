@@ -2,23 +2,36 @@ from django.shortcuts import render, redirect
 from .models import AddressBook
 from django.contrib import messages
 
-# Create your views here.
+def validateEmail(email):
+    errors = []
+    if not '@' in email:
+        errors.append('The email must contain "@"!')
+    else:
+        [user, domain] = email.split('@')
+        if len(user) < 3 or len(domain.split('.')) < 2:
+            errors.append('The email has no valid format!')
+    return errors
+
 def home(request):
     if not request.user.is_authenticated:
         messages.success(request, ('You have to be logged in!'))
         return redirect('login')
     else:
         addresses = AddressBook.objects.all()
-        # print(addresses.query)
         return render(request, "address_book.html", {'addresses':addresses})
 
 def registerPerson(request):
+    errors = []
     name = request.POST['txtName']
     email = request.POST['txtEmail']
     address = request.POST['txtAddress']
     phone_number = request.POST['txtPhoneNumber']
 
-    person = AddressBook.objects.create(name=name, email=email, address=address, phone_number=phone_number)
+    errors = validateEmail(email)
+    if len(errors) > 0:
+        messages.success(request, errors[0])
+    else:
+        person = AddressBook.objects.create(name=name, email=email, address=address, phone_number=phone_number)
     return redirect('home')
 
 def confirmedEditPerson(request):
@@ -27,8 +40,13 @@ def confirmedEditPerson(request):
     email = request.POST['txtEmail']
     address = request.POST['txtAddress']
     phone_number = request.POST['txtPhoneNumber']
-    
     person = AddressBook.objects.get(person_id=person_id)
+    
+    errors = validateEmail(email)
+    if len(errors) > 0:
+        messages.success(request, errors[0])
+        return render(request, 'editPerson.html', {'person':person})
+
     person.name = name
     person.email = email
     person.address = address
