@@ -29,31 +29,35 @@
     <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
         <div class="table-responsive py-2">
             <h2>Address Book</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Email</th>
-                        <th>Phone number</th>
-                        <th colspan="2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for person in addresses %}
-                    <tr>
-                        <td>{{person.person_id}}</td>
-                        <td>{{person.name}}</td>
-                        <td>{{person.address}}</td>
-                        <td>{{person.email}}</td>
-                        <td>{{person.phone_number}}</td>
-                        <td><a href="editPerson/{{person.person_id}}" class="btn btn-info">Edit</a></td>
-                        <td><a href="deletePerson/{{person.person_id}}" class="btn btn-danger btnDelete">Delete</a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            {% if addresses.count == 0 %}
+                <p><i>There are no items to list</i></p>
+            {% else %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Email</th>
+                            <th>Phone number</th>
+                            <th colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for person in addresses %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ person.name }}</td>
+                                <td>{{ person.address }}</td>
+                                <td>{{ person.email }}</td>
+                                <td>{{ person.phone_number }}</td>
+                                <td><a href="editPerson/{{person.person_id}}" class="btn btn-info">Edit</a></td>
+                                <td><a href="deletePerson/{{person.person_id}}" class="btn btn-danger btnDelete">Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 </div>

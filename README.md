@@ -35,7 +35,8 @@ Install or update [Python](https://www.python.org/downloads/) version >=3.6
    - On **Windows** run `venv\Scripts\activate.bat`  (*`deactivate.bat` to deactivate the environment*).
    - On **Linux** run `source env/bin/activate`      (*`deactivate` to deactivate the environment*)
 6. run `[pip][pip3] install -r requirements.txt` to install the needes packages if you didn't before
-7. run `python .\manage.py migrate`
-7. run `python .\manage.py makemigrations`
-8. run `python .\manage.py runserver` to start the Application
-10. Open your browser and type [http://localhost:8000/](http://localhost:8000/) to see and use the Application
+7. run `python manage.py migrate`
+8. run `python manage.py makemigrations`
+9. run `python manage.py createsuperuser` to create the superuser.
+10. run `python manage.py runserver` to start the Application
+11. Open your browser and type [http://localhost:8000/](http://localhost:8000/) to see and use the Application

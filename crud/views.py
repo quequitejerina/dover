@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
 from .models import AddressBook
+from django.contrib import messages
 
 # Create your views here.
 def home(request):
-    addresses = AddressBook.objects.all()
-    return render(request, "address_book.html", {'addresses':addresses})
+    if not request.user.is_authenticated:
+        messages.success(request, ('You have to be logged in!'))
+        return redirect('login')
+    else:
+        addresses = AddressBook.objects.all()
+        # print(addresses.query)
+        return render(request, "address_book.html", {'addresses':addresses})
 
 def registerPerson(request):
     name = request.POST['txtName']
@@ -13,7 +19,7 @@ def registerPerson(request):
     phone_number = request.POST['txtPhoneNumber']
 
     person = AddressBook.objects.create(name=name, email=email, address=address, phone_number=phone_number)
-    return redirect('/')
+    return redirect('home')
 
 def confirmedEditPerson(request):
     person_id = request.POST['numPersonId']
@@ -28,7 +34,7 @@ def confirmedEditPerson(request):
     person.address = address
     person.phone_number = phone_number
     person.save()
-    return redirect('/')
+    return redirect('home')
 
 def editPerson(request, person_id):
     person = AddressBook.objects.get(person_id=person_id)
@@ -37,4 +43,4 @@ def editPerson(request, person_id):
 def deletePerson(request, person_id):
     person = AddressBook.objects.get(person_id=person_id)
     person.delete()
-    return redirect('/')
+    return redirect('home')
